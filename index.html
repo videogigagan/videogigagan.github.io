@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="VideoGigaGAN">
+  <meta name="keywords" content="VideoGigaGAN, Video Super-Resolution, Temporal Propogation">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VideoGigaGAN</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<!--   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+
+  </script> -->
+  <style>
+  .hr {width: 100%; height: 1px; margin: 48px 0; background-color: #d6dbdf;}
+  </style>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/bulma.min.css">
+  <link rel="stylesheet" href="./assets/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./assets/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./assets/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="./assets/css/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  
+  <!-- custom css file  -->
+  <link rel="stylesheet" href="./assets/css/style.css">
+  <link rel="stylesheet" href="./assets/css/twentytwenty.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./assets/js/fontawesome.all.min.js"></script>
+</head>
+<body>
+
+
+  <nav class="navbar" role="navigation" aria-label="main navigation" style="position: fixed; top: 0; width: 100%;">
+    <div class="navbar-brand">
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div class="navbar-menu">
+      <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+        <a class="navbar-item" href="">
+          <span class="icon">
+              <i class="fas fa-home"></i>
+          </span>
+          </a>
+  
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Table of Contents
+          </a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#8xresults">
+              8x Upsampling results
+            </a>
+            <a class="navbar-item" href="#demo">
+              Demo video
+            </a>
+            <a class="navbar-item" href="#ablation">
+              Ablation study
+            </a>
+            <a class="navbar-item" href="#comparison">
+              Comparison with SOTAs
+            </a>
+            <a class="navbar-item" href="#4xresults">
+              More 4x upsampling results
+            </a>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  </nav>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop head">
+      <div class="columns is-centered">
+        <div class="column has-text-centered head">
+          <h1 class="title is-2 publication-title"> 
+            VideoGigaGAN: Towards Detail-rich Video Super-Resolution
+          </h1>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://twizwei.github.io/">Yiran Xu</a><sup><img src="./assets/images/adobe.png" width="15"/></sup><sup>&#128034</sup>,</span>
+            <span class="author-block">
+              <a href="https://taesung.me/">Taesung Park</a><sup><img src="./assets/images/adobe.png" width="15"/></sup>,</span>
+            <span class="author-block">
+                <a href="https://richzhang.github.io/">Richard Zhang</a><sup><img src="./assets/images/adobe.png" width="15"/></sup>,</span>
+            <span class="author-block">
+                <a href="https://yzhou359.github.io/">Yang Zhou</a><sup><img src="./assets/images/adobe.png" width="15"/></sup>,</span>
+            <span class="author-block">
+                <a href="https://research.adobe.com/person/eli-shechtman/">Eli Shechtman</a><sup><img src="./assets/images/adobe.png" width="15"/></sup></span>
+            <span class="author-block">
+                  <a href="https://pages.cs.wisc.edu/~fliu/">Feng Liu</a><sup><img src="./assets/images/adobe.png" width="15"/></sup></span>
+            <span class="author-block">
+              <a href="https://jbhuang0604.github.io/">Jia-Bin Huang</a><sup>&#128034</sup>,</span>
+            <span class="author-block">
+                <a href="https://difanliu.github.io/">Difan Liu</a><sup><img src="./assets/images/adobe.png" width="15"/></sup></span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>&#128034</sup>University of Maryland, College Park,</span>
+            <span class="author-block"><sup><img src="./assets/images/adobe.png" width="15"/></sup>Adobe Research</span>
+          </div>
+
+          
+          
+
+
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2403.13044"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#BibTeX"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-book"></i>
+                  </span>
+                  <span>BibTex</span>
+                  </a>
+              </span>
+              
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- first row -->
+<section id="8xresults" class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+
+
+    <div class="columns is-centered has-text-centered">
+        <h2 class="title is-3">8x Upsampling results (128x128&rarr;1024x1024)</h2>
+    </div>    
+    <center>
+      <p>Our model is able to upsample a video up to 8x with rich details.</p>
+    </center>
+    <br> <br> 
+    <!-- <div class="columns is-centered has-text-centered">
+      <h5 class="subtitle is-4">Click on buttons to change videos. Drag the slider to see input/output comparison.</h5>
+     </div>     -->
+     <center>
+      <p>Click on buttons to change videos. Drag the slider to see input/output comparison.</p>
+    </center>
+       
+    <div id="results-carousel" class="carousel results-carousel">
+    <div class="item">
+        <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+        <div class="video">
+            <video muted autoplay="autoplay" loop="loop" width="100%">
+            <source src="./assets/videos/0011-input-8x.mp4" type="video/mp4">
+            </video> 
+        </div>
+        <div class="video">
+            <video muted autoplay="autoplay" loop="loop" width="100%">
+            <source src="./assets/videos/0011-output-8x.mp4" type="video/mp4">
+            </video> 
+        </div>
+        </div>
+    </div>
+
+    <div class="item">
+        <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+        <div class="video">
+            <video muted autoplay="autoplay" loop="loop" width="100%">
+            <source src="./assets/videos/0016-input-8x.mp4" type="video/mp4">
+            </video> 
+        </div>
+        <div class="video">
+            <video muted autoplay="autoplay" loop="loop" width="100%">
+            <source src="./assets/videos/0016-output-8x.mp4" type="video/mp4">
+            </video>
+        </div>
+        </div>
+    </div>
+
+    <div class="item">
+      <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+      <div class="video">
+          <video muted autoplay="autoplay" loop="loop" width="100%">
+          <source src="./assets/videos/0000-input-8x.mp4" type="video/mp4">
+          </video> 
+      </div>
+      <div class="video">
+          <video muted autoplay="autoplay" loop="loop" width="100%">
+          <source src="./assets/videos/0000-output-8x.mp4" type="video/mp4">
+          </video>
+      </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+      <div class="video">
+          <video muted autoplay="autoplay" loop="loop" width="100%">
+          <source src="./assets/videos/0001-input-8x.mp4" type="video/mp4">
+          </video> 
+      </div>
+      <div class="video">
+          <video muted autoplay="autoplay" loop="loop" width="100%">
+          <source src="./assets/videos/0001-output-8x.mp4" type="video/mp4">
+          </video>
+      </div>
+      </div>
+      </div>
+
+
+    <div class="item">
+        <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+        <div class="video">
+            <video muted autoplay="autoplay" loop="loop" width="100%">
+            <source src="./assets/videos/0002-input-8x.mp4" type="video/mp4">
+            </video> 
+        </div>
+        <div class="video">
+            <video muted autoplay="autoplay" loop="loop" width="100%">
+            <source src="./assets/videos/0002-output-8x.mp4" type="video/mp4">
+            </video>
+        </div>
+        </div>
+    </div>
+
+    <div class="item">
+        <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+        <div class="video">
+            <video muted autoplay="autoplay" loop="loop" width="100%">
+            <source src="./assets/videos/0003-input-8x.mp4" type="video/mp4">
+            </video> 
+        </div>
+        <div class="video">
+            <video muted autoplay="autoplay" loop="loop" width="100%">
+            <source src="./assets/videos/0003-output-8x.mp4" type="video/mp4">
+            </video>
+        </div>
+        </div>
+    </div>
+
+    <div class="item">
+      <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+      <div class="video">
+          <video muted autoplay="autoplay" loop="loop" width="100%">
+          <source src="./assets/videos/0004-input-8x.mp4" type="video/mp4">
+          </video> 
+      </div>
+      <div class="video">
+          <video muted autoplay="autoplay" loop="loop" width="100%">
+          <source src="./assets/videos/0004-output-8x.mp4" type="video/mp4">
+          </video>
+      </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+      <div class="video">
+          <video muted autoplay="autoplay" loop="loop" width="100%">
+          <source src="./assets/videos/0005-input-8x.mp4" type="video/mp4">
+          </video> 
+      </div>
+      <div class="video">
+          <video muted autoplay="autoplay" loop="loop" width="100%">
+          <source src="./assets/videos/0005-output-8x.mp4" type="video/mp4">
+          </video>
+      </div>
+      </div>
+  </div>
+
+  <div class="item">
+    <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+    <div class="video">
+        <video muted autoplay="autoplay" loop="loop" width="100%">
+        <source src="./assets/videos/0006-input-8x.mp4" type="video/mp4">
+        </video> 
+    </div>
+    <div class="video">
+        <video muted autoplay="autoplay" loop="loop" width="100%">
+        <source src="./assets/videos/0006-output-8x.mp4" type="video/mp4">
+        </video>
+    </div>
+    </div>
+</div>
+
+  <div class="item">
+    <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+    <div class="video">
+        <video muted autoplay="autoplay" loop="loop" width="100%">
+        <source src="./assets/videos/0007-input-8x.mp4" type="video/mp4">
+        </video> 
+    </div>
+    <div class="video">
+        <video muted autoplay="autoplay" loop="loop" width="100%">
+        <source src="./assets/videos/0007-output-8x.mp4" type="video/mp4">
+        </video>
+    </div>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+      <div class="video">
+        <video muted autoplay="autoplay" loop="loop" width="100%">
+          <source src="./assets/videos/0008-input-8x.mp4" type="video/mp4">
+        </video> 
+      </div>
+      <div class="video">
+        <video muted autoplay="autoplay" loop="loop" width="100%">
+          <source src="./assets/videos/0008-output-8x.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+  
+  <div class="item">
+    <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+      <div class="video">
+        <video muted autoplay="autoplay" loop="loop" width="100%">
+          <source src="./assets/videos/0009-input-8x.mp4" type="video/mp4">
+        </video> 
+      </div>
+      <div class="video">
+        <video muted autoplay="autoplay" loop="loop" width="100%">
+          <source src="./assets/videos/0009-output-8x.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+
+
+        <div class="item">
+          <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+          <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+              <source src="./assets/videos/0010-input-8x.mp4" type="video/mp4">
+              </video> 
+          </div>
+          <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+              <source src="./assets/videos/0010-output-8x.mp4" type="video/mp4">
+              </video> 
+          </div>
+          </div>
+      </div>
+
+      <div class="item">
+          <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+          <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+              <source src="./assets/videos/0012-input-8x.mp4" type="video/mp4">
+              </video> 
+          </div>
+          <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+              <source src="./assets/videos/0012-output-8x.mp4" type="video/mp4">
+              </video>
+          </div>
+          </div>
+      </div>
+
+      <div class="item">
+          <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+          <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+              <source src="./assets/videos/0013-input-8x.mp4" type="video/mp4">
+              </video> 
+          </div>
+          <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+              <source src="./assets/videos/0013-output-8x.mp4" type="video/mp4">
+              </video>
+          </div>
+          </div>
+      </div>
+
+      <div class="item">
+        <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+        <div class="video">
+            <video muted autoplay="autoplay" loop="loop" width="100%">
+            <source src="./assets/videos/0014-input-8x.mp4" type="video/mp4">
+            </video> 
+        </div>
+        <div class="video">
+            <video muted autoplay="autoplay" loop="loop" width="100%">
+            <source src="./assets/videos/0014-output-8x.mp4" type="video/mp4">
+            </video>
+        </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+        <div class="video">
+            <video muted autoplay="autoplay" loop="loop" width="100%">
+            <source src="./assets/videos/0015-input-8x.mp4" type="video/mp4">
+            </video> 
+        </div>
+        <div class="video">
+            <video muted autoplay="autoplay" loop="loop" width="100%">
+            <source src="./assets/videos/0015-output-8x.mp4" type="video/mp4">
+            </video>
+        </div>
+        </div>
+      </div>
+
+      
+
+      <div class="item">
+      <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+      <div class="video">
+          <video muted autoplay="autoplay" loop="loop" width="100%">
+          <source src="./assets/videos/0017-input-8x.mp4" type="video/mp4">
+          </video> 
+      </div>
+      <div class="video">
+          <video muted autoplay="autoplay" loop="loop" width="100%">
+          <source src="./assets/videos/0017-output-8x.mp4" type="video/mp4">
+          </video>
+      </div>
+      </div>
+      </div>
+
+      <div class="item">
+      <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+        <div class="video">
+          <video muted autoplay="autoplay" loop="loop" width="100%">
+            <source src="./assets/videos/0018-input-8x.mp4" type="video/mp4">
+          </video> 
+        </div>
+        <div class="video">
+          <video muted autoplay="autoplay" loop="loop" width="100%">
+            <source src="./assets/videos/0018-output-8x.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+      </div>
+
+      <div class="item">
+      <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+        <div class="video">
+          <video muted autoplay="autoplay" loop="loop" width="100%">
+            <source src="./assets/videos/0019-input-8x.mp4" type="video/mp4">
+          </video> 
+        </div>
+        <div class="video">
+          <video muted autoplay="autoplay" loop="loop" width="100%">
+            <source src="./assets/videos/0019-output-8x.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+      </div>
+
+      </div>
+  </div>
+</section>
+
+<!-- Paper video. -->
+<section id="demo" class="hero is-light is-small"></section>
+  <div id="spotlight-video">
+      <div class="container is-max-desktop">
+          <div class="column">
+            <h2 class="title is-3">
+              <span class="b">Why is it challenging?</span>
+            </h2>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%" controls>
+                  <source src="./assets/videos/demo.mp4" type="video/mp4">
+              </video> 
+            </div>
+        </div>
+      </div>
+  </div>
+</section>
+
+
+<section id="ablation" class="section">
+    <div class="container ">
+        <div class="columns is-centered has-text-centered">
+            <h2 class="title is-3">Ablation study</h2>
+        </div>
+        
+        <center> 
+          <p>
+            Strong hallucination capability of image GigaGAN results in temporally flickering artifacts, 
+            especially aliasing caused by the artifacted LR input.
+          </p>
+        </center>
+        <div class="columns is-centered has-text-centered">
+          <p> <br>
+            We progressively add components to the base model to handle these artifacts →
+          </p>
+        </div>
+        
+        <!-- Method Buttons -->
+        <div class="buttons has-addons is-centered">
+            <button class="button" onclick="updateVideos2('base')">Image GigaGAN (base model)</button>
+            <button class="button" onclick="updateVideos2('tempAttn')">+Temp Attention</button>
+            <button class="button" onclick="updateVideos2('FeatProp')">+Feature propagation</button>
+            <button class="button" onclick="updateVideos2('AntiAlias')">+Anti-aliasing</button>
+            <button class="button" onclick="updateVideos2('HFShuttle')">+HF shuttle</button>
+        </div>
+        <div class="columns is-centered has-text-centered">
+          <p id="currentMethodDisplay2">Current Method: Image GigaGAN (base model) </p>
+        </div>
+        <!-- Slider for Data -->
+        <div class="slider-flex-container">
+          <input type="range" min="1" max="3" value="1" class="slider" id="dataSlider2">
+          <p id="sliderValue2" class="slider-value">1</p>
+        </div>
+        <div class="columns is-centered has-text-centered">
+          <p>Slide to switch between different examples</p>
+        </div>
+        
+       
+        <div class="columns is-centered ">
+                 
+            <div class="column is-6">
+                <div class="content has-text-justified">
+                    <div class="item">
+                        <div class="video">
+                            <video id="inputVideo2" muted autoplay="autoplay" loop="loop" width="100%">
+                                <source src="./assets/videos/data1-ablation-input.mp4" type="video/mp4">
+                            </video> 
+                        </div>
+                        <p class="video-caption">Input</p>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="column is-6">
+                <div class="content has-text-justified">
+                    <div class="item">
+
+                        <div class="twentytwenty-container" id="ablationTwentyTwentyContainer" data-after-label="GT" data-orientation="horizontal" ratio="1.0">
+
+                            <div class="video">
+                                <video id="methodVideo2" muted autoplay="autoplay" loop="loop" width="100%">
+                                    <source src="./assets/videos/data1-ablation-base.mp4" type="video/mp4">
+                                </video> 
+                            </div>
+
+                            <div class="video">
+                                <video id="gtVideo2" muted autoplay="autoplay" loop="loop" width="100%">
+                                    <source src="./assets/videos/data1-ablation-gt.mp4" type="video/mp4">
+                                </video> 
+                            </div>
+                        </div>
+                        <p class="video-caption">Comparison with GT</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section id="comparison" class="section">
+    <div class="container ">
+        <div class="columns is-centered has-text-centered">
+            <h2 class="title is-3">Comparison with previous methods</h2>
+        </div>
+        
+
+        <center>
+          <p>
+            Compared to previous models, our models provides a detail-rich result with comparable temporal consistency.
+          </p>
+          </center><br>
+
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-4">
+            <div class="content has-text-justified">
+                <div class="item">
+                    <div class="video">
+                        <video id="inputVideo" muted autoplay="autoplay" loop="loop" width="100%">
+                            <source src="./assets/videos/data1-input.mp4" type="video/mp4">
+                        </video> 
+                    </div>
+                    <p class="video-caption">Input</p>
+                </div>
+            </div>
+            
+          </div>
+        </div>
+
+        
+        <div class="columns is-centered ">
+
+            <div class="column is-7">
+                <div class="content has-text-justified">
+                    <div class="item">
+
+                        <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.6" data-before-label="Previous method">
+
+                            <div class="video">
+                                <video id="methodVideo" muted autoplay="autoplay" loop="loop" width="100%">
+                                    <source src="./assets/videos/data1-BasicVSRPP.mp4" type="video/mp4">
+                                </video> 
+                            </div>
+
+                            <div class="video">
+                                <video id="oursVideo" muted autoplay="autoplay" loop="loop" width="100%">
+                                    <source src="./assets/videos/data1-ours.mp4" type="video/mp4">
+                                </video> 
+                            </div>
+                        </div>
+                        <p class="video-caption">Comparison</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column is-7">
+                <div class="content has-text-justified">
+                    <div class="item">
+                        <div class="video">
+                            <video id="gtVideo" muted autoplay="autoplay" loop="loop" width="100%">
+                                <source src="./assets/videos/data1-gt.mp4" type="video/mp4">
+                            </video> 
+                        </div>
+                        <p class="video-caption">GT</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Slider for Data -->
+        <div class="slider-flex-container">
+          <input type="range" min="1" max="4" value="1" class="slider" id="dataSlider" oninput="checkSliderValue()">
+          <p id="sliderValue" class="slider-value">1</p> <!-- Display element for the slider value -->
+        </div>
+        <div class="columns is-centered has-text-centered">
+          <p>Slide to switch between different examples</p>
+        </div>
+
+        <!-- Method Buttons -->
+        <div class="buttons has-addons is-centered">
+            <button class="button" id="edvrButton" onclick="updateVideos('EDVR')">EDVR</button>
+            <button class="button" onclick="updateVideos('MuCAN')">MuCAN</button>
+            <button class="button" onclick="updateVideos('BasicVSR')">BasicVSR</button>
+            <button class="button" onclick="updateVideos('IconVSR')">IconVSR</button>
+            <button class="button" onclick="updateVideos('TTVSR')">TTVSR</button>
+            <button class="button" onclick="updateVideos('BasicVSRPP')">BasicVSR++</button>
+        </div>
+        
+
+        <div class="columns is-centered has-text-centered">
+            <p id="currentMethodDisplay">Current Method: EDVR</p>
+            
+        </div>
+    </div>
+</section>
+
+
+<section id="4xresults" class="section">
+    <div class="container">
+      <div class="columns is-centered has-text-centered">
+        <h2 class="title is-3">Results on real-world videos (128x128&rarr;512x512)</h2>
+      </div>
+      <center>
+        <p>
+          Our model is able to handle general real-world videos.
+        </p>
+      </center>
+      <div id="results-carousel" class="carousel results-carousel">
+
+        <div class="item">
+          <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+            <!-- <div class="desc">AIGC Video</div> -->
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos/0000-input-general.mp4" type="video/mp4">
+              </video> 
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos/0000-output-general.mp4" type="video/mp4">
+              </video> 
+            </div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+            <!-- <div class="desc">Real-World Video</div> -->
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos/0001-input-general.mp4" type="video/mp4">
+              </video> 
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos/0001-output-general.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+            <!-- <div class="desc">AIGC Video</div> -->
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos/0002-input-general.mp4" type="video/mp4">
+              </video> 
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos/0002-output-general.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+            <!-- <div class="desc">Real-World Video</div> -->
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos/0003-input-general.mp4" type="video/mp4">
+              </video> 
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos/0003-output-general.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+            <!-- <div class="desc">Real-World Video</div> -->
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos/0004-input-general.mp4" type="video/mp4">
+              </video> 
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos/0004-output-general.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+            <!-- <div class="desc">Old Movie Clip</div> -->
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos/0005-input-general.mp4" type="video/mp4">
+              </video> 
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos//0005-output-general.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="item">
+          <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+            <!-- <div class="desc">Real-World Video</div> -->
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos/0006-input-general.mp4" type="video/mp4">
+              </video> 
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos/0006-output-general.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="twentytwenty-container" data-before-label="Input" data-orientation="horizontal" ratio="1.0">
+            <!-- <div class="desc">Animation Clip</div> -->
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos/0007-input-general.mp4" type="video/mp4">
+              </video> 
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos/0007-output-general.mp4" type="video/mp4">
+              </video> 
+            </div>
+          </div>
+        </div>
+
+    </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{xu2024videogigagan,
+      title={VideoGigaGAN: Towards Detail-rich Video Super-Resolution},
+      author={Xu, Yiran and Park, Taesung and Zhang, Richard and Zhou, Yiang and Shechtman, Eli and Liu, Feng and Huang, Jia-Bin and Liu, Difan},
+      booktitle={arXiv},
+      pages={--},
+      year={2024}
+    }</code></pre>
+  </div>
+</section>
+
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <div class="columns is-centered"><p>
+            We thank <a
+            href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> and <a href="https://shangchenzhou.com/projects/upscale-a-video/">Upscale-A-Video</a> for its template.
+          </p></div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</footer>
+
+  <!-- custom js file  -->
+  <!-- <script defer src="./assets/js/fontawesome.all.min.js"></script> -->
+  <script src="./assets/js/bulma-carousel.min.js"></script>
+  <script src="./assets/js/bulma-slider.min.js"></script>
+  <script src="./assets/js/index.js"></script>
+  <script src="./assets/js/jquery.event.move.js"></script>
+  <script src="./assets/js/jquery.twentytwenty.js"></script>
+  <script src="./assets/js/select.js"></script>
+  <script>
+  $(function(){
+    $(".twentytwenty-container").twentytwenty();
+    // $(".twentytwenty-container", "#results-carousel").twentytwenty({default_offset_pct: 0.5, ratio: 0.5});
+  });
+  </script>
+  <script>
+    $(document).ready(function() {
+    var referenceVideo = $('#inputVideo2');
+    var specificTwentyTwentyContainer = $('#ablationTwentyTwentyContainer'); // targeting the specific container
+
+    function adjustTwentyTwentySize() {
+        var videoWidth = referenceVideo.width();
+        var videoHeight = referenceVideo.height();
+        // console.log("Setting TwentyTwenty size to:", videoWidth, videoHeight);
+        specificTwentyTwentyContainer.width(videoWidth);
+        specificTwentyTwentyContainer.height(videoHeight);
+        // console.log("Setting done! ", videoWidth, videoHeight);
+
+        // Adjust the size of the videos inside the TwentyTwenty container
+        specificTwentyTwentyContainer.find('video').each(function() {
+            $(this).width(videoWidth);
+            $(this).height(videoHeight);
+        });
+    }
+
+    // referenceVideo.on('loadedmetadata', adjustTwentyTwentySize);
+    referenceVideo.on('loadedmetadata', function() {
+      // console.log("Video metadata loaded");
+      adjustTwentyTwentySize();
+    });
+    $(window).resize(adjustTwentyTwentySize);
+    });
+  </script>
+  <script>
+    // function checkSliderValue() {
+    //     var slider = document.getElementById('dataSlider');
+    //     var edvrButton = document.getElementById('edvrButton');
+    //     var sliderValue = slider.value;
+
+    //     // Update the display of slider value
+    //     document.getElementById('sliderValue').textContent = sliderValue;
+
+    //     // Enable or disable the EDVR button based on slider value
+    //     if (sliderValue > 2) {
+    //         edvrButton.disabled = true;
+    //     } else {
+    //         edvrButton.disabled = false;
+    //     }
+    //     console.log("Slider value:", sliderValue);
+    //     console.log("EDVR button disabled:", edvrButton.disabled);
+    // }
+    function checkSliderValue() {
+        var slider = document.getElementById('dataSlider');
+        var edvrButton = document.getElementById('edvrButton');
+        var sliderValue = slider.value;
+
+        // Update the display of slider value
+        document.getElementById('sliderValue').textContent = sliderValue;
+
+        // Enable or disable the EDVR button based on slider value
+        edvrButton.disabled = sliderValue > 2;
+    }
+
+    // Call the function initially to set the correct state of the button
+    checkSliderValue();
+
+  </script>
+</body>
+</html>
