@@ -24,7 +24,7 @@ function updateVideos(method = null) {
     if (method) {
         currentMethod = method;
         var fullName = methodNames[method] || method;
-        document.getElementById('currentMethodDisplay').textContent = 'Current Method: ' + fullName;
+        document.getElementById('currentMethodDisplay').textContent = fullName;
     }
 
     // if method is 'EDVR' and currentData is bigger than data2, then do not show the EDVR video
@@ -63,7 +63,7 @@ updateVideos('BasicVSRPP');
 methods2 = ['base', 'tempAttn', 'FeatProp', 'AntiAlias', 'HFShuttle']
 data2 = ['data1-ablation', 'data2-ablation', 'data3-ablation']
 var methodNames2 = {
-    'base': 'Image GigaGAN (base model)',
+    'base': 'Image GigaGAN',
     'tempAttn': '+Temp Attention',
     'FeatProp': '+Feature propagation',
     'AntiAlias': '+Anti-aliasing',
@@ -86,7 +86,7 @@ function updateVideos2(method = null) {
     if (method) {
         currentMethod2 = method;
         var fullName2 = methodNames2[method] || method;
-        document.getElementById('currentMethodDisplay2').textContent = 'Current Method: ' + fullName2;
+        document.getElementById('currentMethodDisplay2').textContent = fullName2;
     }
 
     // Update the sources for the second set of video elements

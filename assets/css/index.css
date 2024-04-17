@@ -205,11 +205,13 @@ body {
   display: flex;
   justify-content: center;
   margin: 20px 0;
+  gap: 10px;
 }
 
 .slider-flex-container .slider {
   width: 20%; /* Adjust the width as needed */
 }
+
 
 .slider-value {
   margin-top: 20px;

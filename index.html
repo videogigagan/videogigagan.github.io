@@ -63,10 +63,16 @@
           </a>
           <div class="navbar-dropdown">
             <a class="navbar-item" href="#8xresults">
-              8x Upsampling results
+              8&times Upsampling results
+            </a>
+            <a class="navbar-item" href="#abstract">
+              Abstract
             </a>
             <a class="navbar-item" href="#demo">
               Demo video
+            </a>
+            <a class="navbar-item" href="#method-overview">
+              Method overview
             </a>
             <a class="navbar-item" href="#ablation">
               Ablation study
@@ -95,19 +101,19 @@
 
           <div class="is-size-5 publication-authors">
             <span class="author-block">
-              <a href="https://twizwei.github.io/">Yiran Xu</a><sup><img src="./assets/images/adobe.png" width="15"/></sup><sup>&#128034</sup>,</span>
+              <a href="https://twizwei.github.io/">Yiran Xu</a><sup><img src="./assets/images/adobe.png" width="15"/></sup><sup>&#128034</sup></span>
             <span class="author-block">
-              <a href="https://taesung.me/">Taesung Park</a><sup><img src="./assets/images/adobe.png" width="15"/></sup>,</span>
+              <a href="https://taesung.me/">Taesung Park</a><sup><img src="./assets/images/adobe.png" width="15"/></sup></span>
             <span class="author-block">
-                <a href="https://richzhang.github.io/">Richard Zhang</a><sup><img src="./assets/images/adobe.png" width="15"/></sup>,</span>
+                <a href="https://richzhang.github.io/">Richard Zhang</a><sup><img src="./assets/images/adobe.png" width="15"/></sup></span>
             <span class="author-block">
-                <a href="https://yzhou359.github.io/">Yang Zhou</a><sup><img src="./assets/images/adobe.png" width="15"/></sup>,</span>
+                <a href="https://yzhou359.github.io/">Yang Zhou</a><sup><img src="./assets/images/adobe.png" width="15"/></sup></span>
             <span class="author-block">
                 <a href="https://research.adobe.com/person/eli-shechtman/">Eli Shechtman</a><sup><img src="./assets/images/adobe.png" width="15"/></sup></span>
             <span class="author-block">
                   <a href="https://pages.cs.wisc.edu/~fliu/">Feng Liu</a><sup><img src="./assets/images/adobe.png" width="15"/></sup></span>
             <span class="author-block">
-              <a href="https://jbhuang0604.github.io/">Jia-Bin Huang</a><sup>&#128034</sup>,</span>
+              <a href="https://jbhuang0604.github.io/">Jia-Bin Huang</a><sup>&#128034</sup></span>
             <span class="author-block">
                 <a href="https://difanliu.github.io/">Difan Liu</a><sup><img src="./assets/images/adobe.png" width="15"/></sup></span>
           </div>
@@ -170,18 +176,10 @@
 
 
     <div class="columns is-centered has-text-centered">
-        <h2 class="title is-3">8x Upsampling results (128x128&rarr;1024x1024)</h2>
+        <h2 class="title is-3">8&times Upsampling results (128&times128&rarr;1024&times1024)</h2>
     </div>    
-    <center>
-      <p>Our model is able to upsample a video up to 8x with rich details.</p>
-    </center>
-    <br> <br> 
-    <!-- <div class="columns is-centered has-text-centered">
-      <h5 class="subtitle is-4">Click on buttons to change videos. Drag the slider to see input/output comparison.</h5>
-     </div>     -->
-     <center>
-      <p>Click on buttons to change videos. Drag the slider to see input/output comparison.</p>
-    </center>
+    
+  
        
     <div id="results-carousel" class="carousel results-carousel">
     <div class="item">
@@ -489,16 +487,55 @@
       </div>
 
       </div>
+
+      <center>
+        <p>Our model is able to upsample a video up to 8&times with rich details.</p>
+      </center>
+  </div>
+</section>
+
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column">
+        <h2 class="title is-3 has-text-centered">Abstract</h2>
+        <div class="column has-text-justified">
+          <p>Video super-resolution (VSR) approaches have shown impressive temporal consistency in upsampled videos. 
+            However, these approaches tend to generate blurrier results than their image counterparts as they are limited in their generative capability.
+            This raises a fundamental question: can we extend the success of a generative image upsampler to the VSR task while preserving the temporal consistency?
+            We introduce VideoGigaGAN, a new generative VSR model that can produce videos with high-frequency details and temporal consistency.
+            VideoGigaGAN builds upon a large-scale image upsampler -- GigaGAN. 
+            Simply inflating GigaGAN to a video model by adding temporal modules produces severe temporal flickering.
+            We identify several key issues and propose techniques that significantly improve the temporal consistency of upsampled videos.
+            Our experiments show that, unlike previous VSR methods, VideoGigaGAN generates temporally consistent videos with more fine-grained appearance details.
+            We validate the effectiveness of VideoGigaGAN by comparing it with state-of-the-art VSR models on public datasets and showcasing video results with 8&times super-resolution.</p>
+        </div>
+        <!-- <div class="column" style="display: flex; justify-content: center;">
+          <div class="column has-text-justified" style="flex: 1;  max-width: 45%">
+            <image src="assets/images/abstract.svg"/>
+          </div>
+          <div class="column has-text-justified" style="flex: 1; display: table;">
+            <p style="display: table-cell; vertical-align: middle;">
+              Our method only takes 15 minutes to optimize a representation from an in-the-wild video and can render novel views at 27 FPS.
+              <br><br>
+              On the NVIDIA Dataset, our method achieves a rendering quality comparable to state-of-the-art NeRF-based methods but is much faster to train and render. 
+              <br><br>
+              * The bubble size in the figure indicates the training time (GPU-hours). The training time does not include preprocessing time for all methods.
+            </p>
+          </div> -->
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- Paper video. -->
 <section id="demo" class="hero is-light is-small"></section>
   <div id="spotlight-video">
-      <div class="container is-max-desktop">
+      <div class="container ">
           <div class="column">
             <h2 class="title is-3">
-              <span class="b">Why is it challenging?</span>
+              <span class="b">Overview: Why is it challenging?</span>
             </h2>
             <div class="video">
               <video muted autoplay="autoplay" loop="loop" width="100%" controls>
@@ -511,8 +548,34 @@
 </section>
 
 
+<section class="section" >
+  <br>
+</section>
+
+<section class="section" id="method-overview">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column">
+        <h2 class="title is-3 has-text-centered">Method Overview</h2>
+        <div class="column has-text-justified">
+          <image src="./assets/images/method_overview.svg"></image>
+          <br>
+          <br>
+          <p>Our Video Super-Resolution (VSR) model is built upon the asymmetric U-Net architecture of the image GigaGAN upsampler. 
+            To enforce temporal consistency, we first inflate the image upsampler into a video upsampler by adding <span style="background-color: #E5F0DA;">temporal attention</span> layers into the decoder blocks. 
+            We also enhance consistency by incorporating the features from the <span style="background-color: #7F7F7F;">flow-guided propagation</span> module. 
+            To suppress aliasing artifacts, we use <span style="background-color: #B8C7E4;">Anti-aliasing block</span> in the downsampling layers of the encoder. 
+            Lastly, we directly <span style="background-color: #F1CCB1;">shuttle the high frequency features</span> via skip connection to the decoder layers to compensate for the loss of details in the BlurPool process. 
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 <section id="ablation" class="section">
-    <div class="container ">
+    <div class="container is-max-desktop">
         <div class="columns is-centered has-text-centered">
             <h2 class="title is-3">Ablation study</h2>
         </div>
@@ -523,31 +586,45 @@
             especially aliasing caused by the artifacted LR input.
           </p>
         </center>
+        
+        
+        
+        <!-- Slider for Data -->
+        <div class="slider-flex-container">
+          <input type="range" min="1" max="3" value="1" class="slider" id="dataSlider2">
+          <p id="sliderValue2" class="slider-value">1</p>
+          
+        </div>
+        
+        <div class="columns is-centered has-text-centered">
+          <p class="slider-instruction">Slide to switch between different examples</p>
+        </div> 
+
+        <!-- Method Buttons -->
         <div class="columns is-centered has-text-centered">
           <p> <br>
             We progressively add components to the base model to handle these artifacts →
           </p>
         </div>
-        
-        <!-- Method Buttons -->
         <div class="buttons has-addons is-centered">
-            <button class="button" onclick="updateVideos2('base')">Image GigaGAN (base model)</button>
-            <button class="button" onclick="updateVideos2('tempAttn')">+Temp Attention</button>
-            <button class="button" onclick="updateVideos2('FeatProp')">+Feature propagation</button>
-            <button class="button" onclick="updateVideos2('AntiAlias')">+Anti-aliasing</button>
-            <button class="button" onclick="updateVideos2('HFShuttle')">+HF shuttle</button>
+          <button class="button" onclick="updateVideos2('base')">Image GigaGAN (base model)</button>
+          <button class="button" onclick="updateVideos2('tempAttn')">+Temp Attention</button>
+          <button class="button" onclick="updateVideos2('FeatProp')">+Feature propagation</button>
+          <button class="button" onclick="updateVideos2('AntiAlias')">+Anti-aliasing</button>
+          <button class="button" onclick="updateVideos2('HFShuttle')">+HF shuttle</button>
+      </div>
+      <div class="columns is-centered">
+        <div class="column has-text-justified" style="flex: 5;  max-width: 50%">
+          <p> </p>
         </div>
-        <div class="columns is-centered has-text-centered">
-          <p id="currentMethodDisplay2">Current Method: Image GigaGAN (base model) </p>
+        <div class="column has-text-centered">
+            <p id="currentMethodDisplay2" style="background-color: #FFD700;"> Image GigaGAN (base model) </p>
         </div>
-        <!-- Slider for Data -->
-        <div class="slider-flex-container">
-          <input type="range" min="1" max="3" value="1" class="slider" id="dataSlider2">
-          <p id="sliderValue2" class="slider-value">1</p>
+        <div class="column has-text-centered">
+            <p> GT </p>
         </div>
-        <div class="columns is-centered has-text-centered">
-          <p>Slide to switch between different examples</p>
-        </div>
+      </div>
+        
         
        
         <div class="columns is-centered ">
@@ -606,6 +683,21 @@
           </p>
           </center><br>
 
+        <!-- Slider for Data -->
+        <div class="slider-flex-container" width="20%">
+          <input type="range" min="1" max="4" value="1" class="slider" id="dataSlider" oninput="checkSliderValue()">
+          <p id="sliderValue" class="slider-value">1</p> <!-- Display element for the slider value -->
+        </div>
+        
+        
+        <!-- <div class="columns is-centered has-text-centered">
+          <p>Slide to switch between different examples</p>
+        </div> -->
+
+        
+
+        
+
         <div class="columns is-centered has-text-centered">
           <div class="column is-4">
             <div class="content has-text-justified">
@@ -622,7 +714,28 @@
           </div>
         </div>
 
-        
+        <!-- Method Buttons -->
+        <div class="buttons has-addons is-centered">
+          <button class="button" id="edvrButton" onclick="updateVideos('EDVR')">EDVR</button>
+          <button class="button" onclick="updateVideos('MuCAN')">MuCAN</button>
+          <button class="button" onclick="updateVideos('BasicVSR')">BasicVSR</button>
+          <button class="button" onclick="updateVideos('IconVSR')">IconVSR</button>
+          <button class="button" onclick="updateVideos('TTVSR')">TTVSR</button>
+          <button class="button" onclick="updateVideos('BasicVSRPP')">BasicVSR++</button>
+      </div>
+      
+      <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <p id="currentMethodDisplay" style="background-color: #FFD700; max-width: 50%"> EDVR </p>
+          </div>
+          <div class="column has-text-centered">
+              <p> Ours </p>
+          </div>
+          <div class="column has-text-centered" style="flex: 3;  max-width: 50%">
+            <p> </p>
+          </div>
+      </div>
+
         <div class="columns is-centered ">
 
             <div class="column is-7">
@@ -663,30 +776,7 @@
 
         </div>
 
-        <!-- Slider for Data -->
-        <div class="slider-flex-container">
-          <input type="range" min="1" max="4" value="1" class="slider" id="dataSlider" oninput="checkSliderValue()">
-          <p id="sliderValue" class="slider-value">1</p> <!-- Display element for the slider value -->
-        </div>
-        <div class="columns is-centered has-text-centered">
-          <p>Slide to switch between different examples</p>
-        </div>
-
-        <!-- Method Buttons -->
-        <div class="buttons has-addons is-centered">
-            <button class="button" id="edvrButton" onclick="updateVideos('EDVR')">EDVR</button>
-            <button class="button" onclick="updateVideos('MuCAN')">MuCAN</button>
-            <button class="button" onclick="updateVideos('BasicVSR')">BasicVSR</button>
-            <button class="button" onclick="updateVideos('IconVSR')">IconVSR</button>
-            <button class="button" onclick="updateVideos('TTVSR')">TTVSR</button>
-            <button class="button" onclick="updateVideos('BasicVSRPP')">BasicVSR++</button>
-        </div>
         
-
-        <div class="columns is-centered has-text-centered">
-            <p id="currentMethodDisplay">Current Method: EDVR</p>
-            
-        </div>
     </div>
 </section>
 
@@ -694,7 +784,7 @@
 <section id="4xresults" class="section">
     <div class="container">
       <div class="columns is-centered has-text-centered">
-        <h2 class="title is-3">Results on real-world videos (128x128&rarr;512x512)</h2>
+        <h2 class="title is-3">Results on real-world videos (128&times128&rarr;512&times512)</h2>
       </div>
       <center>
         <p>
